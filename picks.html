@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LMS XII — Picks</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;font-family:'Bebas Neue',sans-serif;background:#fff;color:#000;text-align:center;}
+  .topnav{display:flex;justify-content:center;gap:25px;padding:18px 0;border-bottom:2px solid #000;}
+  .topnav a{color:#000;text-decoration:none;font-weight:700;transition: color 0.2s, text-shadow 0.2s;}
+  .topnav a.active{color:#00f2ff;text-shadow:0 0 8px #00f2ff;}
+  .container{max-width:720px;margin:36px auto;padding:0 16px}
+  h1{font-size:56px;margin-bottom:8px}
+  form{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+  label{display:block;text-align:left;font-weight:700;margin-bottom:6px}
+  input[type=text], select{padding:12px;border:2px solid #000;border-radius:8px;font-size:16px;font-family:inherit}
+  .row{display:flex;gap:12px}
+  .row .col{flex:1}
+  .submit{background:#000;color:#fff;padding:16px;border-radius:10px;border:4px solid #000;font-weight:900;font-size:18px;cursor:pointer}
+  .submit:active{box-shadow:0 0 15px #00f2ff,0 0 30px #00f2ff;transform:scale(0.96);}
+  .hint{margin-top:10px;color:#666;font-size:14px}
+  .bottomnav{margin-top:40px;padding:25px 0;border-top:2px solid #000;text-align:center}
+  .bottomnav a{color:#000;text-decoration:none;font-weight:700;transition: color 0.2s, text-shadow 0.2s;}
+  .bottomnav a.active{color:#00f2ff;text-shadow:0 0 8px #00f2ff;}
+</style>
+</head>
+<body>
+
+  <div class="topnav">
+    <a href="index.html" class="active">Predict</a>
+    <a href="standings.html">Standings</a>
+    <a href="updates.html">Updates</a>
+    <a href="rules.html">Rules</a>
+  </div>
+
+  <div class="container">
+    <h1>Make Your Pick</h1>
+    <form id="pickForm">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" placeholder="Your name" required>
+
+      <div class="row">
+        <div class="col">
+          <label for="team">Team</label>
+          <input id="team" name="team" type="text" placeholder="Team you pick" required>
+        </div>
+        <div class="col">
+          <label for="player">Player</label>
+          <input id="player" name="player" type="text" placeholder="Player pick" required>
+        </div>
+      </div>
+
+      <button type="submit" class="submit">Submit Pick</button>
+    </form>
+
+    <div class="hint">Submissions will be stored in a Google Sheet (we'll wire the Apps Script next).</div>
+  </div>
+
+  <div class="bottomnav">
+    <a href="picks.html" class="active">Predict</a> |
+    <a href="standings.html">Standings</a> |
+    <a href="updates.html">Updates</a> |
+    <a href="rules.html">Rules</a>
+  </div>
+
+<script>
+document.getElementById('pickForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('name').value.trim(),
+    team: document.getElementById('team').value.trim(),
+    player: document.getElementById('player').value.trim(),
+    ts: new Date().toISOString()
+  };
+  const picks = JSON.parse(localStorage.getItem('lms_picks') || '[]');
+  picks.push(data);
+  localStorage.setItem('lms_picks', JSON.stringify(picks));
+  alert('Pick saved locally. We can wire this to Google Sheets next.');
+  this.reset();
+});
+</script>
+
+</body>
+</html>
